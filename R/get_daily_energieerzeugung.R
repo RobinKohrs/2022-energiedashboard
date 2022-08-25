@@ -1,3 +1,6 @@
+install.packages("here")
+install.packages("httr2")
+
 library(here)
 library(httr2)
 
