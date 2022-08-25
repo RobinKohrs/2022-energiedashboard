@@ -1,4 +1,3 @@
-library(tidyverse)
 library(here)
 library(httr2)
 
@@ -91,14 +90,12 @@ df = as.data.frame(final_list)
 # save it -----------------------------------------------------------------
 tdy = gsub("-", "_", today)
 tmr =gsub("-", "_", tomorrow)
-filename = here("output", sprintf("%s_%s.csv", tdy, tmr))
+filename = paste0("output/energieerzeugung/", sprintf("%s_%s.csv", tdy, tmr))
 
 
 # if the directory does not exist -----------------------------------------
 dir = dirname(filename)
 if(!dir.exists(dir)) dir.create(dir)
-
-
 write.csv(df, filename)
 
 
