@@ -15,13 +15,13 @@ url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/Ger
 
 # build request
 req = httr2::request(url)
-req = req_headers(req, "Accept" = "application/json")
+req = httr2::req_headers(req, "Accept" = "application/json")
 
 # perform the request
-resp = req_perform(req)
+resp = httr2::req_perform(req)
 
 # get the content
-content = resp_body_json(resp)
+content = httr2::resp_body_json(resp)
 
 
 # table headers -----------------------------------------------------------
