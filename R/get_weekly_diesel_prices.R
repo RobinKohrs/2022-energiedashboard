@@ -17,8 +17,11 @@ new_data = lapply(seq_along(data), function(i){
     ret = data[[i]]
   }
   ret
-}) %>% as.data.frame() %>%
-  setNames(names(data)) %>% .[1:27,]
+})
+
+new_data = as.data.frame(new_data)
+new_data = setNames(new_data, names(data))
+new_data = new_data[1:27, ]
 
 
 # save data ---------------------------------------------------------------
