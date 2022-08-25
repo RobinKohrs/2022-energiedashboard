@@ -25,9 +25,10 @@ jobs:
         R -e 'install.packages("xml2")'
         R -e 'install.packages("httr2")'
         R -e 'install.packages("here")'
+        R -e 'install.packages("readxl")'
     # Run R script
     - name: Scrape
-      run: Rscript R/get_daily_energieerzeugung.R
+      run: Rscript R/get_weekly_diesel_prices.R
 
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
