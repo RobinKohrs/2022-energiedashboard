@@ -1,7 +1,7 @@
 install.packages("here")
 install.packages("httr2")
 install.packages("curl")
-install.packages("jsonlist")
+install.packages("jsonlite")
 
 library(here)
 library(httr2)
