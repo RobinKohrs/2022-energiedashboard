@@ -1,5 +1,3 @@
-library(here)
-library(httr2)
 
 # dates -------------------------------------------------------------------
 today = Sys.time() %>% as.Date()
