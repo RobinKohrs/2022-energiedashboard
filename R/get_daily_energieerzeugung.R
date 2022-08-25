@@ -12,9 +12,6 @@ url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/Ger
 req = httr2::request(url)
 req = httr2::req_headers(req, "Accept" = "application/json")
 
-print("printing req")
-print(req)
-
 # perform the request
 resp = httr2::req_perform(req)
 
