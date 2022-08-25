@@ -1,12 +1,8 @@
 install.packages("here")
 install.packages("httr2")
-install.packages("curl")
-install.packages("jsonlite")
 
 library(here)
 library(httr2)
-library(curl)
-library(jsonlite)
 
 # dates -------------------------------------------------------------------
 today = Sys.time() %>% as.Date()
@@ -15,9 +11,11 @@ tomorrow = today + 1
 # url ---------------------------------------------------------------------
 url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/German/M15/%sT000000/%sT000000", today, tomorrow)
 
-path = curl::curl_download(url, destfile = here("output/data.csv"))
-content = jsonlite::fromJSON(path)
-print(content)
+req = httr2::request("https://www.google.com")
+resp = httr2::req_perform(req)
+content = httr2::resp_body_html(resp)
+print(paste0("Content: ", content))
+
 #
 #
 #
