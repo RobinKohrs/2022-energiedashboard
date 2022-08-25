@@ -8,10 +8,6 @@ library(httr2)
 today = Sys.time() %>% as.Date()
 tomorrow = today + 1
 
-x <- rnorm(1:10)
-save(x, file = paste0("output/data_", make.names(Sys.time()), ".Rda"))
-
-
 # url ---------------------------------------------------------------------
 url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/German/M15/%sT000000/%sT000000", today, tomorrow)
 
