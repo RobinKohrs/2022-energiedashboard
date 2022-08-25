@@ -2,8 +2,6 @@ on:
   schedule:
     - cron:  "*/10 * * *"
 
-name: get_new_data
-
 jobs:
   run-r-script:
     runs-on: ubuntu-latest
