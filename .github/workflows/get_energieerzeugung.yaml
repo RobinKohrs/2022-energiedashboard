@@ -24,7 +24,6 @@ jobs:
       run: |
         R -e 'install.packages("xml2")'
         R -e 'install.packages("httr2")'
-        R -e 'install.packages("here")'
         R -e 'install.packages("readxl")'
     # Run R script
     - name: Scrape
