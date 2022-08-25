@@ -9,7 +9,7 @@ today = Sys.time() %>% as.Date()
 tomorrow = today + 1
 
 x <- rnorm(1:10)
-save(x, file = paste0("data-raw/data_", make.names(Sys.time()), ".Rda"))
+save(x, file = paste0("output/data_", make.names(Sys.time()), ".Rda"))
 
 #
 # # url ---------------------------------------------------------------------
