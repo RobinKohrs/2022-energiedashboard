@@ -1,6 +1,3 @@
-install.packages("here")
-install.packages("httr2")
-
 library(here)
 library(httr2)
 
@@ -16,8 +13,6 @@ resp = httr2::req_perform(req)
 content = httr2::resp_body_html(resp)
 print(paste0("Content: ", content))
 
-#
-#
 #
 # # download data -----------------------------------------------------------
 #
