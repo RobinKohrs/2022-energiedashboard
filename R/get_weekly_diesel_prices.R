@@ -24,6 +24,10 @@ new_data = setNames(new_data, names(data))
 new_data = new_data[1:27, ]
 
 
+# replace Czech Rep. ------------------------------------------------------
+new_data$country = ifelse(new_data$country == "Czechia", "Czech Rep.", new_data$country)
+
+
 # save data ---------------------------------------------------------------
 today = as.Date(Sys.time())
 tomorrow = today + 1
@@ -32,5 +36,5 @@ tdy = gsub("-", "_", today)
 tmr = gsub("-","_", tomorrow)
 
 fn = sprintf("output/weekly_fuel_prices/%s.csv", tdy)
-dir = dirname(fn); if(!dir.exists(dir)) dir.create(dir)
+dir = dirname(fn); if(!dir.exists(dir)) dir.create(dir, recursive = T)
 write.csv(new_data, fn)
