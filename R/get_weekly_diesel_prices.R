@@ -10,6 +10,16 @@ data = data[,1:length(new_names)]
 names(data) = new_names
 data = data[!is.na(data$country) & !is.na(data$price), ]
 
+new_data = lapply(seq_along(data), function(i){
+  if(i != 1){
+    ret = as.numeric(gsub(",", "", data[[i]]))
+  }else{
+    ret = data[[i]]
+  }
+  ret
+}) %>% as.data.frame() %>%
+  setNames(names(data)) %>% .[1:27,]
+
 
 # save data ---------------------------------------------------------------
 today = as.Date(Sys.time())
@@ -20,4 +30,4 @@ tmr = gsub("-","_", tomorrow)
 
 fn = sprintf("output/weekly_fuel_prices/%s.csv", tdy)
 dir = dirname(fn); if(!dir.exists(dir)) dir.create(dir)
-write.csv(data, fn)
+write.csv(new_data, fn)
