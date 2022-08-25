@@ -1,5 +1,5 @@
 # Hourly scraping
-name: download energy data
+name: download energy production data
 
 # Controls when the action will run.
 on:
@@ -27,7 +27,7 @@ jobs:
         R -e 'install.packages("readxl")'
     # Run R script
     - name: Scrape
-      run: Rscript R/get_weekly_diesel_prices.R
+      run: Rscript R/get_daily_energieerzeugung.R
 
  # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
