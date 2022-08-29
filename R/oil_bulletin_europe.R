@@ -6,7 +6,6 @@ library(readxl)
 # path data ---------------------------------------------------------------
 path_data = here("data/weekly_oil_bulleting/Oil_Bulletin_Prices_History.xlsx")
 
-
 # data --------------------------------------------------------------------
 data_raw = read_xlsx(path_data)
 
