@@ -24,8 +24,8 @@ data_per_country = lapply(country_data, function(x){
 
   # add the date
   # also removes the row with the units...
-  data_with_date = x %>% rename(date = 2,
-                                er = 3) %>%
+  names(x)[2:3] = c("date", er)
+  data_with_date = x %>%
     filter(!is.na(date))
 
   for(val in names(vals_country)){
