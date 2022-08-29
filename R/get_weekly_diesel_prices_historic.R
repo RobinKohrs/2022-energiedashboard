@@ -1,5 +1,4 @@
-library(magrittr)
-library(tidyr)
+library(tidyverse)
 url = "https://ec.europa.eu/energy/observatory/reports/Oil_Bulletin_Prices_History.xlsx"
 file = paste0(tempdir(), "/", "temp.xlsx")
 download.file(url, file)
@@ -14,8 +13,8 @@ vals = c(
 
 
 # clean -------------------------------------------------------------------
+names(data_raw)[1] = "country"
 country_data = data_raw %>%
-  rename(country = 1) %>%
   tidyr::fill(country)  %>% split(., .$country)
 
 data_per_country = lapply(country_data, function(x){
@@ -24,7 +23,7 @@ data_per_country = lapply(country_data, function(x){
 
   # add the date
   # also removes the row with the units...
-  names(x)[2:3] = c("date", er)
+  names(x)[2:3] = c("date", "er")
   data_with_date = x %>%
     filter(!is.na(date))
 
