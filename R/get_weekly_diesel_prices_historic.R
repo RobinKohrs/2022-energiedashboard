@@ -1,4 +1,5 @@
 library(magrittr)
+library(tidyr)
 url = "https://ec.europa.eu/energy/observatory/reports/Oil_Bulletin_Prices_History.xlsx"
 file = paste0(tempdir(), "/", "temp.xlsx")
 download.file(url, file)
