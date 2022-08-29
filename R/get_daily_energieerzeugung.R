@@ -1,4 +1,3 @@
-
 # dates -------------------------------------------------------------------
 today = as.Date(Sys.time())
 tomorrow = today + 1
@@ -7,6 +6,13 @@ tomorrow = today + 1
 url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/German/M15/%sT000000/%sT000000", today, tomorrow)
 
 # download data -----------------------------------------------------------
+
+
+a = system(sprintf("curl %s", url), intern = T)
+content = jsonlite::fromJSON(a)
+print(paste0("content: ", content))
+stop()
+
 
 # build request
 req = httr2::request(url)
