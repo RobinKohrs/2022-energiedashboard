@@ -82,7 +82,7 @@ one_df_all_countries = do.call("rbind", data_after_min_year)
 path_diesel = one_df_all_countries[,c(1,2,5)]
 path_diesel = "output/weekly_fuel_prices/historic/historic_diesel.csv"
 dir = dirname(path_diesel); if(!dir.exists(dir)) dir.create(dir, recursive = T)
-write.csv(diesel, path_diesel)
+write.csv(path_diesel, path_diesel)
 
 
 
