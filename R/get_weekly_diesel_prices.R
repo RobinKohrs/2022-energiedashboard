@@ -27,7 +27,7 @@ new_data = lapply(seq_along(data), function(i){
 new_data = as.data.frame(new_data)
 new_data = setNames(new_data, names(data))
 new_data = new_data[1:27, ]
-new_date[["date"]] = date
+new_data[["date"]] = date
 
 
 # replace Czech Rep. ------------------------------------------------------
