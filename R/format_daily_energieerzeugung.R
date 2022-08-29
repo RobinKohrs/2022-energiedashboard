@@ -2,131 +2,100 @@ library(tidyverse)
 library(lubridate)
 library(here)
 
-
 # dates -------------------------------------------------------------------
 start = as.Date("2022-08-01")
 end = Sys.time() %>% as.Date() + 1
 
 # url ---------------------------------------------------------------------
-url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/German/M15/%sT000000/%sT000000", start, end)
+url = "https://transparency.apg.at/transparency-api/api/v1/Download/AGPT/German/M15/2022-01-01T000000/2022-08-30T000000/868d39b3-d482-41e3-84b0-41136c8bfa68/AGPT_2021-12-31T23_00_00Z_2022-08-29T22_00_00Z_15M_de_2022-08-29T09_23_11Z.csv?"
 
 # download data -----------------------------------------------------------
-
-# build request
-req = httr2::request(url)
-req = httr2::req_headers(req, "Accept" = "application/json")
-req = httr2::req_headers(req, "User-Agent" = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0")
-
-# perform the request
-resp = httr2::req_perform(req)
-
-# get the content
-content = httr2::resp_body_json(resp)
-print(paste0("content: ", content))
-
-# table headers -----------------------------------------------------------
-values_list = list(
-  "Wind" = c(),
-  "Solar" = c(),
-  "Biomasse" = c(),
-  "Gas" = c(),
-  "Kohle" = c(),
-  "Öl" = c(),
-  "Geothermie" = c(),
-  "Pumpspeicher" = c(),
-  "Lauf- und Schwellwasser" = c(),
-  "Speicher" = c(),
-  "Sonstige Erneuerbare" = c(),
-  "Müll" = c(),
-  "Andere" = c(),
-  "Date" = c(),
-  "Time" = c()
-)
+file = tempfile()
+download.file(url, file)
 
 
-# clean data --------------------------------------------------------------
-rows = content$ResponseData$ValueRows
+# data --------------------------------------------------------------------
+data = read.delim(file, sep = ";")
 
 
-for(r in seq_along(rows)){
+# format names ------------------------------------------------------------
+names_src = names(data)
+new_names = gsub("(.*)\\.\\..*$", "\\1", names_src)
+names(data) = new_names
 
-  row = rows[[r]]
+# format ------------------------------------------------------------------
+data_num = data %>%
+  mutate(
+    across(3:ncol(data), function(x){
+      as.numeric(gsub(",", ".", x))
+    })
+  )
 
-  # date and time
-  values_list$Date = c(values_list$Date, row$DF)
-  values_list$Time = c(values_list$Time, row$TF)
-
-  # for the values
-  values = row$V
-
-  # for each energy category
-  for(c in seq_along(values)){
-
-    vals_one_category = values[[c]]
-    val = vals_one_category$V
-    values_list[[c]] = c(values_list[[c]], val)
-  }
-}
-
-# shorten each list element to the length of the values -------------------
-l_each_element = vapply(values_list, length, numeric(1))
-min_length = min(l_each_element)
-
-# do all but the time and the date have the same minimum length?
-min_elements = which(l_each_element == min_length)
-diff = setdiff(names(values_list), names(min_elements))
-only_date_time_missing = all(diff %in% c("Date", "Time"))
-if(!only_date_time_missing){
-  stop("Some error...")
-}
-
-# short then date time to the length of the values
-final_list = lapply(values_list, function(x){
-  x = x[1:min_length]
-})
+data_date = data_num %>%
+  rename(
+    "start" = 1,
+    "end" = 2,
+  ) %>%
+  mutate(
+    start_date = as.Date(substr(start, 1, 10), format="%d.%m.%Y"),
+    end_date = as.Date(substr(end, 1, 10), format="%d.%m.%Y")
+  )
 
 
-# make it a dataframe -----------------------------------------------------
-df = as.data.frame(final_list)
+# aggregate per day -------------------------------------------------------
+per_day = data_date %>%
+  group_by(start_date) %>%
+  summarise(
+    across(where(is.numeric),
+           function(x){sum(x, na.rm=T)})
+  )
 
 
-# save it -----------------------------------------------------------------
-tdy = gsub("-", "_", today)
-tmr =gsub("-", "_", tomorrow)
-filename = paste0("output/energieerzeugung/", sprintf("%s_%s.csv", tdy, tmr))
 
-
-# if the directory does not exist -----------------------------------------
-dir = dirname(filename)
-if(!dir.exists(dir)) dir.create(dir)
-write.csv(df, filename)
+# set negative to 0 -------------------------------------------------------
+per_day %>%
+  mutate(across(where(is.numeric),
+                ~ ifelse(.x < 0, 0, .x)
+  )) -> per_day
 
 
 
 
+# write out ---------------------------------------------------------------
+
+fn = here("data/daily_energieerzeugung_historical.csv")
+write_csv(per_day, fn)
 
 
+pd_long = per_day %>%
+  summarise(
+    across(
+      where(is.numeric),
+      sum
+    )
+  ) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "type",
+    values_to = "vals"
+  ) %>%
+  mutate(
+    share = vals / sum(vals)
+  ) %>% arrange(desc(share))
 
 
+# lump togehter all but the 5 most common ones ----------------------------
+idx = which(names(per_day) %in% pd_long$type[1:5])
+most_common = per_day[,idx]
+least_common = per_day[,-c(1,idx)] %>%
+  rowwise() %>%
+  transmute(Andere = sum(c_across(everything())))
 
 
+lumped = bind_cols(per_day[,1], most_common, least_common)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+fn = here("data/daily_energieerzeugung_historical_lumped.csv")
+write_csv(lumped, fn)
 
 
