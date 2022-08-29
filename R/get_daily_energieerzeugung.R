@@ -11,6 +11,9 @@ url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/Ger
 req = httr2::request(url)
 req = httr2::req_headers(req, "Accept" = "application/json")
 req = httr2::req_headers(req, "User-Agent" = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0")
+req = httr2::req_headers(req, "Referer" = "https://transparency.apg.at/erzeugung-nach-typ/export?hideTitle=1&hideDescription=1&fromDate=2022-08-29T000000&exportTo=2022-08-30T000000&resolution=M15&language=German")
+
+print(paste0("req: ", req))
 
 # perform the request
 resp = httr2::req_perform(req)
