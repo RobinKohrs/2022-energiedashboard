@@ -6,13 +6,6 @@ tomorrow = today + 1
 url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/German/M15/%sT000000/%sT000000", today, tomorrow)
 
 # download data -----------------------------------------------------------
-file = tempfile()
-download.file(url, file)
-json = data = jsonlite::fromJSON(file)
-print(json)
-
-stop()
-
 
 # build request
 req = httr2::request(url)
@@ -24,7 +17,7 @@ resp = httr2::req_perform(req)
 
 # get the content
 content = httr2::resp_body_json(resp)
-
+print(paste0("content: ", content))
 
 # table headers -----------------------------------------------------------
 values_list = list(
