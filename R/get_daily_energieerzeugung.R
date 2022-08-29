@@ -4,14 +4,13 @@ tomorrow = today + 1
 
 # url ---------------------------------------------------------------------
 url = sprintf("https://transparency.apg.at/transparency-api/api/v1/Data/AGPT/German/M15/%sT000000/%sT000000", today, tomorrow)
-
+url = "https://jsonplaceholder.typicode.com/todos/1"
 # download data -----------------------------------------------------------
 
 # build request
 req = httr2::request(url)
 req = httr2::req_headers(req, "Accept" = "application/json")
 req = httr2::req_headers(req, "User-Agent" = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0")
-req = httr2::req_headers(req, "Referer" = "https://transparency.apg.at/erzeugung-nach-typ/export?hideTitle=1&hideDescription=1&fromDate=2022-08-29T000000&exportTo=2022-08-30T000000&resolution=M15&language=German")
 
 print(paste0("req: ", req))
 
