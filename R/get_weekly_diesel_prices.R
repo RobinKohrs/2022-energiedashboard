@@ -10,10 +10,10 @@ date_unformatted = gsub(".*(\\d{1,2}/\\d{1,2}/\\d{1,2})$", "\\1", col5_header)
 date = as.Date(date_unformatted, format="%m/%d/%y")
 
 # format data --------------------------------------------------------------
-new_names = c("country", "price", "super95", "diesel", "heizöl")
+new_names = c("country", "super95", "diesel", "heizöl")
 data = data[,1:length(new_names)]
 names(data) = new_names
-data = data[!is.na(data$country) & !is.na(data$price), ]
+data = data[!is.na(data$country) & !is.na(data$diesel), ]
 
 new_data = lapply(seq_along(data), function(i){
   if(i != 1){
