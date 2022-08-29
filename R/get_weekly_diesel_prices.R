@@ -35,10 +35,9 @@ new_data$country = ifelse(new_data$country == "Czechia", "Czech Rep.", new_data$
 
 
 # make german names -------------------------------------------------------
-new_data = mutate(
-  new_data,
-  country_ger = recode(
-    country,
+res = sapply(new_data$country, function(x) {
+  switch(
+    x,
     "Austria" = "Österreich",
     "Belgium" = "Belgien",
     "Bulgaria" = "Bulgarien",
@@ -51,7 +50,7 @@ new_data = mutate(
     "Germany" = "Deutschland",
     "Greece" = "Griechenland",
     "Hungary" = "Ungarn",
-    "Czechia" = "Czech Rep.",
+    "Czech Rep." = "Tschechien",
     "Ireland" = "Irland",
     "Italy" = "Italien",
     "Latvia" = "Lettland",
@@ -62,12 +61,15 @@ new_data = mutate(
     "Poland" = "Polen",
     "Portugal" = "Portugal",
     "Romania" = "Rumänien",
+    "Slovakia" = "Slovakei",
     "Slovenia" = "Slowenien",
     "Spain" = "Spanien",
     "Sweden" = "Schweden",
-
   )
-) -> new_data
+})
+
+new_data[["country_ger"]] = res
+
 
 
 # save data ---------------------------------------------------------------
