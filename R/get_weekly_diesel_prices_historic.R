@@ -72,11 +72,49 @@ data_per_country = lapply(country_data, function(x){
 })
 
 
+
 # bind them together ------------------------------------------------------
 min_year = as.Date("2020-01-01")
 data_after_min_year = lapply(data_per_country, function(x) x[x$date > min_year, ])
 
 one_df_all_countries = do.call("rbind", data_after_min_year)
+one_df_all_countries %>%
+  mutate(
+    country = recode(country,
+                    "AT"  = "Österreich",
+                    "BG" = "Bulgarien",
+                    "BE"  = "Belgien",
+                    "BU"  = "Bulgarien",
+                    "CY"  = "Zypern",
+                    "CZ"  = "Tschechien",
+                    "DE"  = "Deutschland",
+                    "DK"  = "Dänemark",
+                    "EE"  = "Estland",
+                    "ES"  = "Spanien",
+                    "FI"  = "Finnland",
+                    "FR"  = "Frankreich",
+                    "GR"  = "Griechenland",
+                    "HU"  = "Ungarn",
+                    "LV"  = "Lettland",
+                    "IT"  = "Italien",
+                    "RO"  = "Rumänien",
+                    "LT"  = "Lituaen",
+                    "PT"  = "Portugal",
+                    "HR" = "Kroatien",
+                    "IE" = "Irland",
+                    "LU" = "Luxemburg",
+                    "SE"  = "Schweden",
+                    "SI"  = "Slovenien",
+                    "SK"  = "Slovakei",
+                    "PL"  = "Polen",
+                    "EE"  = "Estland",
+                    "MT" = "Malta",
+                    "NL" = "Niederlanden"
+                     )
+  ) -> one_df_all_countries
+
+
+
 # diesel ------------------------------------------------------------------
 diesel = one_df_all_countries[,c(1,2,5)]
 rownames(diesel) = NULL
