@@ -41,6 +41,6 @@ tomorrow = today + 1
 tdy = gsub("-", "_", today)
 tmr = gsub("-","_", tomorrow)
 
-fn = sprintf("output/weekly_fuel_prices/%s.csv", tdy)
+fn = sprintf("output/weekly_fuel_prices/weeky_fuel_prices.csv")
 dir = dirname(fn); if(!dir.exists(dir)) dir.create(dir, recursive = T)
 write.csv(new_data, fn)
