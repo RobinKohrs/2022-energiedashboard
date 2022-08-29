@@ -4,6 +4,11 @@ download.file(url, file)
 data = readxl::read_xlsx(file, sheet = 2)
 
 
+# get the date (in col 5 header) ------------------------------------------------------------
+col5_header = names(data)[[5]]
+date_unformatted = gsub(".*(\\d{1,2}/\\d{1,2}/\\d{1,2})$", "\\1", col5_header)
+date = as.Date(date_unformatted, format="%m/%d/%y")
+
 # format data --------------------------------------------------------------
 new_names = c("country", "price", "super95", "diesel", "heizöl")
 data = data[,1:length(new_names)]
@@ -22,6 +27,7 @@ new_data = lapply(seq_along(data), function(i){
 new_data = as.data.frame(new_data)
 new_data = setNames(new_data, names(data))
 new_data = new_data[1:27, ]
+new_date[["date"]] = date
 
 
 # replace Czech Rep. ------------------------------------------------------
