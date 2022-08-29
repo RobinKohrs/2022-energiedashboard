@@ -34,6 +34,41 @@ new_data[["date"]] = date
 new_data$country = ifelse(new_data$country == "Czechia", "Czech Rep.", new_data$country)
 
 
+# make german names -------------------------------------------------------
+new_data %>%
+  mutate(
+    country_ger = recode(country,
+                     "Austria" = "Österreich",
+                     "Belgium" = "Belgien",
+                     "Bulgaria" = "Bulgarien",
+                     "Croatia" = "Kroatien",
+                     "Cyprus" = "Zypern",
+                     "Denmark" = "Dänemark",
+                     "Estonia" = "Estland",
+                     "Finland" = "Finnland",
+                     "France" = "Frankreich",
+                     "Germany" = "Deutschland",
+                     "Greece" = "Griechenland",
+                     "Hungary" = "Ungarn",
+                     "Czechia" = "Czech Rep.",
+                     "Ireland" = "Irland",
+                     "Italy" = "Italien",
+                     "Latvia" = "Lettland",
+                     "Lithuania" = "Litauen",
+                     "Luxembourg" = "Luxemburg",
+                     "Malta" = "Malta",
+                     "Netherlands" = "Niederlanden",
+                     "Poland" = "Polen",
+                     "Portugal" = "Portugal",
+                     "Romania" = "Rumänien",
+                     "Slovenia" = "Slowenien",
+                     "Spain" = "Spanien",
+                     "Sweden" = "Schweden",
+
+                     )
+  ) -> new_data
+
+
 # save data ---------------------------------------------------------------
 today = as.Date(Sys.time())
 tomorrow = today + 1
