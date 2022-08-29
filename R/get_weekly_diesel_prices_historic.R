@@ -77,12 +77,15 @@ min_year = as.Date("2020-01-01")
 data_after_min_year = lapply(data_per_country, function(x) x[x$date > min_year, ])
 
 one_df_all_countries = do.call("rbind", data_after_min_year)
-
 # diesel ------------------------------------------------------------------
 diesel = one_df_all_countries[,c(1,2,5)]
+rownames(diesel) = NULL
+diesel_wide = diesel %>% pivot_wider(names_from = country,
+                                values_from = Dieselkraftstoff)
+
 path_diesel = "output/weekly_fuel_prices/historic/historic_diesel.csv"
 dir = dirname(path_diesel); if(!dir.exists(dir)) dir.create(dir, recursive = T)
-write.csv(diesel, path_diesel)
+write.csv(diesel_wide, path_diesel)
 
 
 
