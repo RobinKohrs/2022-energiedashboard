@@ -16,7 +16,7 @@ jobs:
     steps:
       - shell: bash
         run: |
-          curl https://transparency.apg.at/transparency-api/api/v1/Download/AGPT/German/M15/2022-01-01T000000/2022-08-30T000000/868d39b3-d482-41e3-84b0-41136c8bfa68/AGPT_2021-12-31T23_00_00Z_2022-08-29T22_00_00Z_15M_de_2022-08-29T09_23_11Z.csv > test.csv
+          curl https://transparency.apg.at/transparency-api/api/v1/Download/AGPT/German/M15/2022-08-29T000000/2022-08-30T000000/AGPT_2022-08-28T22_00_00Z_2022-08-29T22_00_00Z_15M_de_2022-08-29T15_40_08Z.csv > test.csv
           cat test.csv
 
 
